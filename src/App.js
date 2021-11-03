@@ -7,13 +7,15 @@ import Room from './components/Room';
 import * as routes from './routes.js'
 
 function App() {
+  const userId = localStorage.getItem('userId')
+  console.log("GOT MY USER ID ITS", userId);
   return (
     <div className="App">
       <Router>
         <Header />
         <Switch>
           <Route exact path={routes.HOME} component={Form} />
-          <Route exact path={routes.ROOM + "/:roomId"} component={Room} />
+          <Route exact path={routes.ROOM + "/:roomId"} component={ (props) => <Room {...props} userId={userId} /> } />
           <Route exact path={routes.METHOD} component={Method} />
         </Switch>
       </Router>

@@ -10,9 +10,10 @@ import * as roomApi from '../api/roomApi';
 import * as routes from '../routes';
 
 const Form = ({history}) => {
-  const [learningLanguage, setLearningLanguage] = useState(null)
+  const [nativeLanguage, setNativeLanguage] = useState("");
+  const [learningLanguage, setLearningLanguage] = useState("")
 
-  const fieldSettingList = [setLearningLanguage];
+  const fieldSettingList = [setNativeLanguage, setLearningLanguage];
 
   const languageLearningOptions = [
     "English",
@@ -30,7 +31,7 @@ const Form = ({history}) => {
   }
 
   async function getJoinableRoomId() {
-    return await roomApi.GetJoinableRoom(learningLanguage);
+    return await roomApi.GetJoinableRoom(nativeLanguage, learningLanguage);
   }
 
   return (
@@ -41,11 +42,11 @@ const Form = ({history}) => {
           return (
             <Box sx={{ minWidth: 120, paddingBottom: 1.5, textAlign: "left" }}>
               <FormControl fullWidth>
-                <InputLabel id="demo-simple-select-label">{"Learning"}</InputLabel>
+                <InputLabel id="demo-simple-select-label">{index === 0 ? "Native" : "Learning"}</InputLabel>
                 <Select
                   labelId="demo-simple-select-label"
                   id="demo-simple-select"
-                  value={learningLanguage}
+                  value={index == 0 ? nativeLanguage : learningLanguage}
                   label={"Learning"}
                   onChange={(evt) => onChange(y, evt.target.value)}
                 >

@@ -28,6 +28,7 @@ const countdownRenderer = ({ hours, minutes, seconds, completed }) => {
 };
 
 const Room = (props) => {
+  
   const
   {
     match: {
@@ -35,7 +36,9 @@ const Room = (props) => {
         roomId,
       },
     },
+    userId
   } = props;
+
 
   const userVideo = useRef();
   const partnerVideo = useRef();
@@ -45,11 +48,11 @@ const Room = (props) => {
   const peerRef = useRef();
   const [searching, setSearching] = useState(true);
 
-  function connectToUser(userId) {
+  function connectToUser(otherUserId) {
     const peer = peerRef.current;
     console.log("peer before clal", peer)
-    console.log("Calling ", userId, " with ", stream)
-    const call = peer.call(userId, streamRef.current)
+    console.log("Calling ", otherUserId, " with ", stream)
+    const call = peer.call(otherUserId, streamRef.current)
 
     console.log("CALL", call)
 
@@ -93,22 +96,26 @@ const Room = (props) => {
     peerRef.current = peer;
 
     peer.on('open', id => {
-      console.log("Peer open", id)
-      socket.current.emit('join-room', roomId, id)
+      socket.current.emit('set userId', userId);
+      socket.current.on('ready userId', function () {
+        console.log('Associated! Going to join room');
+        socket.current.emit('join-room', roomId, id)
+      });
     })
 
     peer.on('call', call => {
-      console.log("gettig a call")
+      console.log("Receiving a call. Answering it now")
+      setSearching(false)
       call.answer(streamRef.current)
 
       call.on('stream', stream => {
-        console.log("HERHEREHREHERH")
+        console.log("Stream incoming")
         if (partnerVideo.current) {
           partnerVideo.current.srcObject = stream;
         }
       })
       call.on('close', () => {
-        console.log("calling close video")
+        console.log("Stream from incoming call closed")
         partnerVideo.current = null
         setSearching(true);
       })
