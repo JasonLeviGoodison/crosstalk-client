@@ -135,6 +135,12 @@ const Room = (props) => {
   useEffect(() => {
     return () => {
       console.log("UNMOUNTING")
+      socket.current.disconnect();
+      navigator.mediaDevices.getUserMedia({ video: true, audio: true }).then(stream => {
+        stream.getTracks().forEach(function(track) {
+          track.stop();
+        });
+      })
     }
   }, [])
 
