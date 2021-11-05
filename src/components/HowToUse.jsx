@@ -1,10 +1,7 @@
 import React from 'react';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
-import ListItemAvatar from '@mui/material/ListItemAvatar';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import ListItemText from '@mui/material/ListItemText';
-import Box from '@mui/material/Box';
+import RuleStrings from '../localization/rules';
 
 import Accordion from '@mui/material/Accordion';
 import AccordionSummary from '@mui/material/AccordionSummary';
@@ -14,11 +11,11 @@ import { Divider } from '@mui/material';
 
 const HowToUse = () => {
   const rules = [
-    <div>You speak your native language, they speak their native language. (If you are skeptical, check our <a href="google.com"> why this works</a>)</div>,
-    "Never speak the other persons language",
-    "Use actions, drawings, props, and whatever else you need to explain what you are saying.",
-    "Never harass anyone for any reason! This is not a dating site!",
-    "This is a beta, please provide as much feedback as possible jasongoodisondevelopment@gmail.com"
+    <div>{RuleStrings.howToRule1} (<a href="/method"> {RuleStrings.whyThisWorks} </a>)</div>,
+    RuleStrings.howToRule2,
+    RuleStrings.howToRule3,
+    RuleStrings.howToRule4,
+    RuleStrings.howToRule5
   ]
   return (
     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginRight: 150, marginTop: 100}}>

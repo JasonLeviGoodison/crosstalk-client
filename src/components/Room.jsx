@@ -83,6 +83,7 @@ const Room = (props) => {
     })
     socket.current.disconnect();
     partnerVideo.current.srcObject = null
+    // TODO: This is an ugly hack if I've ever seen one
     // force a new run of the useeffect to recreate the socket
     setNewRoom(newRoom + 1)
   }

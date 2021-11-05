@@ -9,6 +9,7 @@ import InputLabel from '@mui/material/InputLabel';
 import * as roomApi from '../api/roomApi';
 import * as routes from '../routes';
 import { Grid } from '@mui/material';
+import Languages from "../localization/languages"; 
 
 const Form = ({history}) => {
   const [nativeLanguage, setNativeLanguage] = useState("");
@@ -28,6 +29,10 @@ const Form = ({history}) => {
   }
 
   async function findPartnerNow() {
+    if (learningLanguage === nativeLanguage) {
+      alert("Please choose different languages");
+      return;
+    }
     let roomId = await getJoinableRoomId();
     history.push({
       state: {
@@ -54,7 +59,7 @@ const Form = ({history}) => {
             return (
               <Box sx={{ minWidth: 120, paddingBottom: 1.5, textAlign: "left" }}>
                 <FormControl fullWidth>
-                  <InputLabel id="demo-simple-select-label">{index === 0 ? "Native" : "Learning"}</InputLabel>
+                  <InputLabel id="demo-simple-select-label">{index === 0 ? Languages.Native : Languages.Learning}</InputLabel>
                   <Select
                     labelId="demo-simple-select-label"
                     id="demo-simple-select"
@@ -63,7 +68,7 @@ const Form = ({history}) => {
                     onChange={(evt) => onChange(y, evt.target.value)}
                   >
                     {
-                      languageLearningOptions.map((x) => <MenuItem value={x}> {x} </MenuItem>)
+                      languageLearningOptions.map((x) => <MenuItem value={x}> {Languages[x]} </MenuItem>)
                     }
                   </Select>
                 </FormControl>
@@ -72,7 +77,7 @@ const Form = ({history}) => {
           })
         }
         {
-          learningLanguage != null && <Button variant="primary" onClick={findPartnerNow}> Find a partner now </Button>
+          learningLanguage != null && <Button variant="primary" onClick={findPartnerNow}> {Languages.FindAPartner} </Button>
         }
         </div>
       </div>
