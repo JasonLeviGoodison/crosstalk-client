@@ -11,6 +11,9 @@ const Header = ({history}) => {
   const onLoginClicked = () => {
     history.push(routes.LOG_IN);
   };
+  const onFeedbackClicked = () => {
+    history.push(routes.FEEDBACK)
+  }
   const onMethodClicked = () => {
     history.push(routes.METHOD);
   };
@@ -23,7 +26,7 @@ const Header = ({history}) => {
         <Navbar.Brand onClick={homeClicked}>
           {' '}
           <div>
-            CrossTalk (Alpha){/*CompanyName*/}
+            CrossTalk (Beta){/*CompanyName*/}
             {/*<img
               width={35}
               alt="Company logo"
@@ -36,7 +39,8 @@ const Header = ({history}) => {
         </Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
-          <Nav className="ml-auto">
+        <Nav className="ml-auto">
+            <Nav.Link onClick={onFeedbackClicked}> Feedback </Nav.Link>
             <Nav.Link onClick={onMethodClicked}> How to use </Nav.Link>
           </Nav>
           {

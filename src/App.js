@@ -1,5 +1,4 @@
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
-import Form from './components/Form';
 import Header from './components/Header';
 import Method from './components/Method';
 import './App.css';
@@ -7,6 +6,7 @@ import Room from './components/Room';
 import * as routes from './routes.js';
 import * as userApi from './api/userApi';
 import { useEffect, useState } from 'react';
+import Home from './components/Home';
 
 function App() {
   const [userId, setUserId] = useState('');
@@ -21,7 +21,7 @@ function App() {
       <Router>
         <Header />
         <Switch>
-          <Route exact path={routes.HOME} component={Form} />
+          <Route exact path={routes.HOME} component={Home} />
           <Route exact path={routes.ROOM + "/:roomId"} component={ (props) => {
             if (userId === '') return 'Loading';
             return (<Room {...props} userId={userId} />);

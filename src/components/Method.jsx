@@ -1,8 +1,9 @@
 import React from 'react';
+import HowToUse from './HowToUse';
 
 const Method = () => {
   return (
-    <div> COMING SOON! </div>
+    <HowToUse/>
   ) 
 };
 
