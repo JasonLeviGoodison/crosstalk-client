@@ -53,7 +53,7 @@ const Form = ({history}) => {
   return (
     <Grid justifyContent="center" style={{width: '25%', marginRight: 'auto', marginLeft: 200, marginTop: 100}}>
       <div>
-        <h1 style={{marginBottom: 30}}>CrossTalk (Beta)</h1>
+        <h1 style={{marginBottom: 30}}>PidginPost (Beta)</h1>
         <div>
         {
           fieldSettingList.map((y, index) => {

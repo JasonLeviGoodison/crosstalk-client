@@ -26,7 +26,7 @@ const Header = ({history}) => {
         <Navbar.Brand onClick={homeClicked}>
           {' '}
           <div>
-            CrossTalk (Beta){/*CompanyName*/}
+            PidginPost (Beta){/*CompanyName*/}
             {/*<img
               width={35}
               alt="Company logo"

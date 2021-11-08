@@ -7,6 +7,7 @@ import * as routes from './routes.js';
 import * as userApi from './api/userApi';
 import { useEffect, useState } from 'react';
 import Home from './components/Home';
+import Feedback from './components/Feedback';
 
 function App() {
   const [userId, setUserId] = useState('');
@@ -30,6 +31,7 @@ function App() {
             return (<Room {...props} userId={userId} />);
           } } />
           <Route exact path={routes.METHOD} component={Method} />
+          <Route exact path={routes.FEEDBACK} component={Feedback} />
         </Switch>
       </Router>
     </div>
