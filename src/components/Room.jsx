@@ -88,26 +88,6 @@ const Room = (props) => {
     setNewRoom(newRoom + 1)
   }
 
-  function connectToUser(otherUserId) {
-    const peer = peerRef.current;
-    console.log("peer before clal", peer)
-    console.log("Calling ", otherUserId, " with ", stream)
-    const call = peer.call(otherUserId, streamRef.current)
-
-    console.log("CALL", call)
-
-    call.on('stream', userVideoStream => {
-      console.log("stream coming in", userVideoStream)
-      partnerVideo.current.srcObject = userVideoStream;
-      setSearching(false);
-    })
-
-    call.on('close', () => {
-      partnerVideo.current = null
-      setSearching(true);
-    })
-  }
-
   function sendMicOffRequest() {
     socket.current.emit("mic set", !myMicOn);
     setMyMicOn(!myMicOn);
@@ -115,6 +95,27 @@ const Room = (props) => {
 
 
   useEffect(() => {
+
+    function connectToUser(otherUserId) {
+      const peer = peerRef.current;
+      console.log("peer before clal", peer)
+      console.log("Calling ", otherUserId, " with ", stream)
+      const call = peer.call(otherUserId, streamRef.current)
+  
+      console.log("CALL", call)
+  
+      call.on('stream', userVideoStream => {
+        console.log("stream coming in", userVideoStream)
+        partnerVideo.current.srcObject = userVideoStream;
+        setSearching(false);
+      })
+  
+      call.on('close', () => {
+        partnerVideo.current = null
+        setSearching(true);
+      })
+    }
+
     console.log("RUNNING THE USEEFFECT HERER")
     socket.current = io.connect(process.env.REACT_APP_API_URL, { transports : ['websocket'] });
     navigator.mediaDevices.getUserMedia({ video: true, audio: true }).then(stream => {
@@ -168,7 +169,7 @@ const Room = (props) => {
         }, 1000)
       })
       
-    }, [newRoom])
+    })
 
     socket.current.on('user-disconnected', userId => {
       if (partnerVideo.current) {
@@ -181,7 +182,7 @@ const Room = (props) => {
       setTheirMicOn(value)
     })
 
-  }, [])
+  }, [newRoom, roomId, userId, stream])
 
   useEffect(() => {
     return () => {

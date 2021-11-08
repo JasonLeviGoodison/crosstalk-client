@@ -10,9 +10,12 @@ import Home from './components/Home';
 
 function App() {
   const [userId, setUserId] = useState('');
-  useEffect(async () => {
-    let loadedUserId = await userApi.GetUserId();
-    setUserId(loadedUserId);
+  useEffect(() => {
+    async function fetchData() {
+      let loadedUserId = await userApi.GetUserId();
+      setUserId(loadedUserId);
+    }
+    fetchData();
   }, []);
 
   console.log("GOT MY USER ID ITS", userId);

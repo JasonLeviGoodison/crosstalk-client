@@ -21,6 +21,7 @@ const Form = ({history}) => {
     "English",
     "Spanish",
     "French",
+    "Chinese",
   ]
 
   
@@ -63,7 +64,7 @@ const Form = ({history}) => {
                   <Select
                     labelId="demo-simple-select-label"
                     id="demo-simple-select"
-                    value={index == 0 ? nativeLanguage : learningLanguage}
+                    value={index === 0 ? nativeLanguage : learningLanguage}
                     label={"Learning"}
                     onChange={(evt) => onChange(y, evt.target.value)}
                   >

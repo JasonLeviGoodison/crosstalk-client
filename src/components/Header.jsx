@@ -5,12 +5,12 @@ import * as routes from '../routes';
 import Divider from '@material-ui/core/Divider';
 
 const Header = ({history}) => {
-  const onSignUpClicked = () => {
-    history.push(routes.SIGN_UP);
-  };
-  const onLoginClicked = () => {
-    history.push(routes.LOG_IN);
-  };
+  // const onSignUpClicked = () => {
+  //   history.push(routes.SIGN_UP);
+  // };
+  // const onLoginClicked = () => {
+  //   history.push(routes.LOG_IN);
+  // };
   const onFeedbackClicked = () => {
     history.push(routes.FEEDBACK)
   }
