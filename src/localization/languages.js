@@ -26,7 +26,7 @@ export default new LocalizedStrings({
     Chinese: "Chino",
     FindAPartner: "¡Encuentra un socio ahora!",
     Native: "Nativo",
-    Learning: "aprendiendo"
+    Learning: "Aprendiendo"
   },
   cmn: {
     English: "英语",

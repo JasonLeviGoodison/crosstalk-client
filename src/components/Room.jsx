@@ -116,7 +116,7 @@ const Room = (props) => {
 
   useEffect(() => {
     console.log("RUNNING THE USEEFFECT HERER")
-    socket.current = io.connect("http://localhost:3000", { transports : ['websocket'] });
+    socket.current = io.connect(process.env.REACT_APP_API_URL, { transports : ['websocket'] });
     navigator.mediaDevices.getUserMedia({ video: true, audio: true }).then(stream => {
       setStream(stream);
       streamRef.current = stream;
@@ -127,8 +127,9 @@ const Room = (props) => {
       const peer = new Peer({
         initiator: true,
         stream: stream,
-        host: '/',
-        port: 3001
+        host: 'peerjs-server.herokuapp.com',
+        port: 443,
+        secure: true
       })
       peerRef.current = peer;
   

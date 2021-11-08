@@ -1,5 +1,5 @@
 
-const BASE_ADDRESS = "http://localhost:3000";//process.env.REACT_APP_API_URL;
+const BASE_ADDRESS = process.env.REACT_APP_API_URL;
 
 export async function GetUserId() {
   let userId = localStorage.getItem('userId')
