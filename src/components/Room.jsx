@@ -95,7 +95,7 @@ const Room = (props) => {
 
 
   useEffect(() => {
-
+    
     function connectToUser(otherUserId) {
       const peer = peerRef.current;
       console.log("peer before clal", peer)
@@ -182,7 +182,7 @@ const Room = (props) => {
       setTheirMicOn(value)
     })
 
-  }, [newRoom, roomId, userId, stream])
+  }, [roomId, userId])
 
   useEffect(() => {
     return () => {
