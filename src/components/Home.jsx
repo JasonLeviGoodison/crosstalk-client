@@ -7,7 +7,6 @@ const Home = () => {
     <>
     <div style={{display: 'flex', justifyContent: 'space-between'}}>
       <Form/>
-      <HowToUse/>
     </div>
     </>
   );

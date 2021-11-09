@@ -19,7 +19,7 @@ const HowToUse = () => {
   ]
   return (
     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginRight: 150, marginTop: 100}}>
-      <Accordion style={{ maxWidth: 500 }} expanded={true}>
+      <Accordion style={{ }} expanded={true}>
         <AccordionSummary
           expandIcon={<ExpandMoreIcon />}
           aria-controls="panel1a-content"
