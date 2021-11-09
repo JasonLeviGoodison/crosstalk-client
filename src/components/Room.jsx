@@ -1,6 +1,4 @@
 import React, { useEffect, useState, useRef } from 'react';
-import io from 'socket.io-client';
-import Peer from 'peerjs';
 import styled from 'styled-components';
 import Countdown from 'react-countdown';
 import Button from 'react-bootstrap/Button';
@@ -12,7 +10,7 @@ import { Tooltip } from '@mui/material';
 import { withRouter } from 'react-router';
 import * as roomApi from '../api/roomApi';
 import * as routes from '../routes';
-
+import Stream from '../classes/Stream';
 
 const MyVideo = styled.video`
   width: 22%;
@@ -62,6 +60,7 @@ const Room = (props) => {
   const [newRoom, setNewRoom] = useState(0)
   const partnerVideo = useRef();
   const socket = useRef();
+  const socketState = useState(null);
   const [stream, setStream] = useState();
   const streamRef = useRef()
   const peerRef = useRef();
@@ -85,7 +84,7 @@ const Room = (props) => {
     partnerVideo.current.srcObject = null
     // TODO: This is an ugly hack if I've ever seen one
     // force a new run of the useeffect to recreate the socket
-    setNewRoom(newRoom + 1)
+    //setNewRoom(newRoom + 1)
   }
 
   function sendMicOffRequest() {
@@ -93,82 +92,82 @@ const Room = (props) => {
     setMyMicOn(!myMicOn);
   }
 
+  function connectToUser(otherUserId) {
+    const peer = peerRef.current;
+    console.log("peer before clal", peer)
+    console.log("Calling ", otherUserId, " with ", stream)
+    const call = peer.call(otherUserId, streamRef.current)
+
+    console.log("CALL", call)
+
+    call.on('stream', userVideoStream => {
+      console.log("stream coming in", userVideoStream)
+      partnerVideo.current.srcObject = userVideoStream;
+      setSearching(false);
+    })
+
+    call.on('close', () => {
+      partnerVideo.current = null
+      setSearching(true);
+    })
+  }
+
 
   useEffect(() => {
-    
-    function connectToUser(otherUserId) {
-      const peer = peerRef.current;
-      console.log("peer before clal", peer)
-      console.log("Calling ", otherUserId, " with ", stream)
-      const call = peer.call(otherUserId, streamRef.current)
-  
-      console.log("CALL", call)
-  
-      call.on('stream', userVideoStream => {
-        console.log("stream coming in", userVideoStream)
-        partnerVideo.current.srcObject = userVideoStream;
-        setSearching(false);
-      })
-  
-      call.on('close', () => {
-        partnerVideo.current = null
-        setSearching(true);
-      })
-    }
-
     console.log("RUNNING THE USEEFFECT HERER")
-    socket.current = io.connect(process.env.REACT_APP_API_URL, { transports : ['websocket'] });
-    navigator.mediaDevices.getUserMedia({ video: true, audio: true }).then(stream => {
-      setStream(stream);
-      streamRef.current = stream;
-      if (userVideo.current) {
-        userVideo.current.srcObject = stream;
-      }
+    const socketInst = new Stream();
+    socketState(socketInst.GetSocket())
+    socket.current = socketInst.GetSocket();
 
-      const peer = new Peer({
-        initiator: true,
-        stream: stream,
-        host: 'peerjs-server.herokuapp.com',
-        port: 443,
-        secure: true
-      })
-      peerRef.current = peer;
+    socketInst.GetMediaStream()
+      .then(stream => {
+        setStream(stream);
+        streamRef.current = stream;
+        if (userVideo.current) {
+          userVideo.current.srcObject = stream;
+        }
+
+
+        peerRef.current = peer;
+    
+        peer.on('open', id => {
+          socket.current.emit('set userId', userId);
+          socket.current.on('ready userId', function () {
+            console.log('Associated! Going to join room');
+            socket.current.emit('join-room', roomId, id, native, learning)
+          });
+        })
   
-      peer.on('open', id => {
-        socket.current.emit('set userId', userId);
-        socket.current.on('ready userId', function () {
-          console.log('Associated! Going to join room');
-          socket.current.emit('join-room', roomId, id)
-        });
-      })
+        peer.on('call', call => {
+          console.log("Receiving a call. Answering it now")
+          setSearching(false)
+            call.answer(streamRef.current)
+    
+            call.on('stream', stream => {
+              console.log("Stream incoming")
+              if (partnerVideo.current) {
+                partnerVideo.current.srcObject = stream;
+              }
+            })
+            call.on('close', () => {
+              console.log("Stream from incoming call closed")
+              partnerVideo.current = null
+              setSearching(true);
+            })
+        })
   
-      peer.on('call', call => {
-        console.log("Receiving a call. Answering it now")
-        setSearching(false)
-          call.answer(streamRef.current)
-  
-          call.on('stream', stream => {
-            console.log("Stream incoming")
-            if (partnerVideo.current) {
-              partnerVideo.current.srcObject = stream;
-            }
-          })
-          call.on('close', () => {
-            console.log("Stream from incoming call closed")
-            partnerVideo.current = null
-            setSearching(true);
-          })
-      })
-  
-      socket.current.on('user-connected', userId => {
-        console.log("user connected", userId)
-        // user is joining
-        setTimeout(() => {
-          // user joined
-          connectToUser(userId)
-        }, 1000)
-      })
+        socket.current.on('user-connected', userId => {
+          console.log("user connected", userId)
+          // user is joining
+          setTimeout(() => {
+            // user joined
+            connectToUser(userId)
+          }, 1000)
+        })
       
+    }).catch(e => {
+      alert("Cant use the app if you dont grant permissions.")
+      history.push("/")
     })
 
     socket.current.on('user-disconnected', userId => {
