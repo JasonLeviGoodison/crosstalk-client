@@ -69,8 +69,6 @@ const Room = (props) => {
   const [theirMicOn, setTheirMicOn] = useState(true);
   const [myMicOn, setMyMicOn] = useState(true);
 
-  console.log("NATIVE", native, learning, props)
-
   async function findNewRoom() {
     console.log("Going to find another user to meet with")
     var newRoomId = await roomApi.GetJoinableRoom(native, learning);
@@ -134,41 +132,44 @@ const Room = (props) => {
       })
       peerRef.current = peer;
   
-      peer.on('open', id => {
-        socket.current.emit('set userId', userId);
+      peer.on('open', peerId => {
+        socket.current.emit('set user data', userId, peerId, native, learning);
         socket.current.on('ready userId', function () {
           console.log('Associated! Going to join room');
-          socket.current.emit('join-room', roomId, id)
+          socket.current.emit('join-room', roomId)
         });
       })
   
       peer.on('call', call => {
         console.log("Receiving a call. Answering it now")
         setSearching(false)
-          call.answer(streamRef.current)
-  
-          call.on('stream', stream => {
-            console.log("Stream incoming")
-            if (partnerVideo.current) {
-              partnerVideo.current.srcObject = stream;
-            }
-          })
-          call.on('close', () => {
-            console.log("Stream from incoming call closed")
-            partnerVideo.current = null
-            setSearching(true);
-          })
+        call.answer(streamRef.current)
+
+        call.on('stream', stream => {
+          console.log("Stream incoming")
+          if (partnerVideo.current) {
+            partnerVideo.current.srcObject = stream;
+          }
+        })
+        call.on('close', () => {
+          console.log("Stream from incoming call closed")
+          partnerVideo.current = null
+          setSearching(true);
+        })
       })
   
-      socket.current.on('user-connected', userId => {
-        console.log("user connected", userId)
+      socket.current.on('user-connected', otherPeerId => {
+        console.log("user connected", otherPeerId)
         // user is joining
         setTimeout(() => {
           // user joined
-          connectToUser(userId)
+          connectToUser(otherPeerId)
         }, 1000)
       })
       
+    }).catch(e => {
+      alert("Cant use the app if you dont grant all permissions (You may be using your camera in another app)");
+      history.push("/")
     })
 
     socket.current.on('user-disconnected', userId => {
@@ -188,12 +189,12 @@ const Room = (props) => {
     return () => {
       socket.current.disconnect();
 
-      streamRef.current.getTracks()
+      streamRef.current?.getTracks()
         .forEach((track) => {
           track.stop()
           track.enabled = false
         });
-        streamRef.current = null;
+      streamRef.current = null;
     }
   }, [])
 
@@ -218,9 +219,12 @@ const Room = (props) => {
         <Tooltip title="Hang up">
           <Button variant="danger" onClick={() => history.push('/')}> <CallEndIcon fontSize="large"/> </Button>
         </Tooltip>
-        <Tooltip title={"Turn Mic " + (myMicOn ? "Off" : "On")}>
-          <Button variant="primary" onClick={sendMicOffRequest}> { !myMicOn ? <MicOffIcon fontSize="large"/> : <MicIcon fontSize="large"/> } </Button>
-        </Tooltip>
+        {
+          searching === false &&
+          <Tooltip title={"Turn Mic " + (myMicOn ? "Off" : "On")}>
+            <Button variant="primary" onClick={sendMicOffRequest}> { !myMicOn ? <MicOffIcon fontSize="large"/> : <MicIcon fontSize="large"/> } </Button>
+          </Tooltip>
+        }
         <Tooltip title={"Find a new partner"}>
           <Button variant="secondary" onClick={findNewRoom}> <NextPlanIcon fontSize="large"/> </Button>
         </Tooltip>

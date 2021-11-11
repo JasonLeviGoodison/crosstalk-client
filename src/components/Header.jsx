@@ -39,12 +39,13 @@ const Header = ({history}) => {
         </Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
+        {
+            /*
         <Nav className="ml-auto">
             <Nav.Link onClick={onFeedbackClicked}> Feedback </Nav.Link>
             <Nav.Link onClick={onMethodClicked}> How to use </Nav.Link>
           </Nav>
-          {
-            /*
+
             <Nav.Link onClick={onSignUpClicked}> Sign up </Nav.Link>
             <Nav.Link onClick={onLoginClicked}> Login </Nav.Link>
           </Nav>

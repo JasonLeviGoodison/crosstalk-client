@@ -1,6 +1,6 @@
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import Header from './components/Header';
-import Method from './components/Method';
+//import Method from './components/Method';
 import './App.css';
 import Room from './components/Room';
 import * as routes from './routes.js';
@@ -30,8 +30,8 @@ function App() {
             if (userId === '') return 'Loading';
             return (<Room {...props} userId={userId} />);
           } } />
-          <Route exact path={routes.METHOD} component={Method} />
-          <Route exact path={routes.FEEDBACK} component={Feedback} />
+          { /*<Route exact path={routes.METHOD} component={Method} />
+          <Route exact path={routes.FEEDBACK} component={Feedback} /> */}
         </Switch>
       </Router>
     </div>
