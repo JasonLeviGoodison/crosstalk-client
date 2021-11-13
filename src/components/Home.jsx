@@ -5,7 +5,9 @@ import Form from './Form';
 const Home = () => {
   return (
     <>
-    <div style={{display: 'flex', justifyContent: 'space-between'}}>
+    <div className="" style={{
+      display: 'flex',
+      justifyContent: 'space-between'}}>
       <Form/>
     </div>
     </>

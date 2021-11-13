@@ -49,9 +49,9 @@ const Form = ({history}) => {
 
   //backgroundColor: 'white', padding: 32, position: "absolute"
   return (
-    <Grid justifyContent="center" style={{marginRight: 'auto', marginLeft: 'auto', marginTop: 100}}>
+    <Grid justifyContent="center" style={{marginRight: 'auto', marginLeft: 'auto', marginTop: 100 }}>
       <div>
-        <h1 style={{marginBottom: 30}}>PidginPost (Beta)</h1>
+        <div style={{marginBottom: 30, fontWeight: 700, fontSize: 26, color: '#3c3c3c'}}>PidginPost (Beta)</div>
         <div>
         {
           fieldSettingList.map((y, index) => {
@@ -60,6 +60,7 @@ const Form = ({history}) => {
                 <FormControl fullWidth>
                   <InputLabel id="demo-simple-select-label">{index === 0 ? Languages.Native : Languages.Learning}</InputLabel>
                   <Select
+                    style={{backgroundColor: '#F7F7F7'}}
                     labelId="demo-simple-select-label"
                     id="demo-simple-select"
                     value={index === 0 ? nativeLanguage : learningLanguage}
@@ -76,7 +77,7 @@ const Form = ({history}) => {
           })
         }
         {
-          learningLanguage != null && <Button variant="primary" onClick={findPartnerNow}> {Languages.FindAPartner} </Button>
+          learningLanguage != null && <Button style={{backgroundColor: '#1DB0F6', borderColor: '#1DB0F6'}} onClick={findPartnerNow}> {Languages.FindAPartner} </Button>
         }
         </div>
       </div>
