@@ -7,7 +7,8 @@ const Home = () => {
     <>
     <div className="" style={{
       display: 'flex',
-      justifyContent: 'space-between'}}>
+      justifyContent: 'space-between',
+      height: '100%' }}>
       <Form/>
     </div>
     </>

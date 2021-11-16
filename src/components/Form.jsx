@@ -49,7 +49,7 @@ const Form = ({history}) => {
 
   //backgroundColor: 'white', padding: 32, position: "absolute"
   return (
-    <Grid justifyContent="center" style={{marginRight: 'auto', marginLeft: 'auto', marginTop: 100 }}>
+    <Grid justifyContent="center" style={{marginRight: 'auto', marginLeft: 'auto', marginTop: 100}}>
       <div>
         <div style={{marginBottom: 30, fontWeight: 700, fontSize: 26, color: '#3c3c3c', borderRadius: 16}}>{Languages.FindAPartner}</div>
         <div>

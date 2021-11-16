@@ -8,6 +8,7 @@ import * as userApi from './api/userApi';
 import { useEffect, useState } from 'react';
 import Home from './components/Home';
 import Feedback from './components/Feedback';
+import NewRoom from './components/NewRoom';
 
 function App() {
   const [userId, setUserId] = useState('');
@@ -22,10 +23,12 @@ function App() {
   console.log("GOT MY USER ID ITS", userId);
   return (
     <div className="App">
+      <div id="field">
       <Router>
         <Header />
         <Switch>
           <Route exact path={routes.HOME} component={Home} />
+          <Route exact path={"/test"} component={NewRoom} />
           <Route exact path={routes.ROOM + "/:roomId"} component={ (props) => {
             if (userId === '') return 'Loading';
             return (<Room {...props} userId={userId} />);
@@ -34,6 +37,7 @@ function App() {
           <Route exact path={routes.FEEDBACK} component={Feedback} /> */}
         </Switch>
       </Router>
+      </div>
     </div>
   );
 }

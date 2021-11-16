@@ -1,0 +1,23 @@
+.video-grid-container {
+  width: calc(100% - 100px);
+  margin-top: 15px;
+  margin-bottom: 15px;
+}
+
+.video-grid-participant {
+  display: table-cell;
+  margin: 4px;
+  background-color: rgba(0, 0, 0, 0.5);
+  background-position: 50%;
+  background-repeat: no-repeat;
+  border-radius: 20px;
+  border: 1px solid #9281bc;
+  position: relative;
+  z-index: 1;
+}
+
+.video {
+  border-radius: 20px;
+  object-fit: cover;
+  transform: rotateY(180deg);
+}
