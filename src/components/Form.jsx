@@ -28,6 +28,10 @@ const Form = ({history}) => {
   }
 
   async function findPartnerNow() {
+    if (learningLanguage === '' || nativeLanguage === '') {
+      alert("Please fill out form");
+      return;
+    }
     if (learningLanguage === nativeLanguage) {
       alert("Please choose different languages");
       return;
