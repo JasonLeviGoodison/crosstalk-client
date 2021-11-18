@@ -81,7 +81,7 @@ const Form = ({history}) => {
         }
           <div style={{paddingTop: 30}}>
             <Divider/>
-            or join during an <a href="https://www.meetup.com/virtual-language-exchange-pidginpost"> event </a> when more people are on
+            join during an <a href="https://www.meetup.com/virtual-language-exchange-pidginpost"> event </a>
           </div>
         </div>
       </div>
