@@ -212,7 +212,10 @@ const Room = (props) => {
   
   return (
     <div style={{backgroundColor: 'black'}}>
-      {searching && <div style={{backgroundColor: 'white'}}> Searching for partner ... <br/> <Countdown renderer={countdownRenderer} date={Date.now() + 299 * 1000} /> </div> }
+      {searching && <div style={{backgroundColor: 'white'}}>
+        Searching for partner ... <br/>
+        If no one is on right now, join during an <a href="https://www.meetup.com/virtual-language-exchange-pidginpost"> event </a> where you'll be guarenteed to find a partner.
+        <Countdown renderer={countdownRenderer} date={Date.now() + 299 * 1000} /> </div> }
       {UserVideo}
       {PartnerVideo}
       <div style={{ position: 'absolute', right: '46%', bottom: 10, display: 'flex', justifyContent: 'space-between', width: "13%"}}>

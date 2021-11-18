@@ -8,7 +8,7 @@ import Button from 'react-bootstrap/Button';
 import InputLabel from '@mui/material/InputLabel';
 import * as roomApi from '../api/roomApi';
 import * as routes from '../routes';
-import { Grid } from '@mui/material';
+import { Divider, Grid } from '@mui/material';
 import Languages from "../localization/languages"; 
 
 const Form = ({history}) => {
@@ -79,6 +79,10 @@ const Form = ({history}) => {
         {
           learningLanguage != null && <Button style={{backgroundColor: '#1DB0F6', borderColor: '#1DB0F6', borderRadius: 16}} onClick={findPartnerNow}> {Languages.Search} </Button>
         }
+          <div style={{paddingTop: 30}}>
+            <Divider/>
+            or join during an <a href="https://www.meetup.com/virtual-language-exchange-pidginpost"> event </a> when more people are on
+          </div>
         </div>
       </div>
     </Grid>
