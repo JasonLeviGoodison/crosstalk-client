@@ -51,8 +51,8 @@ const Room = (props) => {
     history,
     location: {
       state: {
-        native,
-        learning
+        native = 'English',
+        learning = 'Spanish'
       }
     }
   } = props;
