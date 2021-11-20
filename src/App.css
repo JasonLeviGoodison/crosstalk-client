@@ -1,6 +1,7 @@
 .App {
   text-align: center;
   /*font-family: "Google Sans", Roboto, Arial, Helvetica, sans-serif;*/
+  height: 100%;
 }
 
 .App-logo {
@@ -40,4 +41,34 @@
 
 .other-user-video {
   width: 100%;
+}
+
+#field {
+  flex-direction: column;
+  width: 100%;
+}
+
+#field,
+.video-grid-container {
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.header {
+  width: 100%;
+}
+
+.background {
+  width: 476px;
+  height: 409px;
+}
+
+.video-grid {
+  display: grid;
+  justify-content: center;
+  align-items: center;
+  grid-column-gap: 0;
+  grid-row-gap: 0;
 }
