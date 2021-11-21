@@ -1,6 +1,11 @@
 .App {
   text-align: center;
   /*font-family: "Google Sans", Roboto, Arial, Helvetica, sans-serif;*/
+  height: 100%;
+}
+
+#root {
+  height: 100vh;
 }
 
 .App-logo {
@@ -12,6 +17,32 @@
   .App-logo {
     animation: App-logo-spin infinite 20s linear;
   }
+}
+
+#field {
+  flex-direction: column;
+  width: 100%;
+}
+
+#field,
+.video-grid-container {
+  height: 100%;
+  display: flex;
+  /*justify-content: center;*/
+}
+
+.control-container {
+  position: absolute;
+  right: 43%;
+  bottom: 10px;
+  display: "flex";
+  justify-content: space-between;
+  width: fit-content;
+}
+
+.control-container > div > button,
+.control-container > button {
+  margin-left: 5px;
 }
 
 .App-header {
@@ -40,4 +71,27 @@
 
 .other-user-video {
   width: 100%;
+}
+
+.field-control-list-button {
+  position: absolute;
+  border-radius: 50%;
+  border: 1px solid #000;
+  width: 15px;
+  height: 15px;
+  right: 0;
+  bottom: -2px;
+  margin: auto;
+  font-size: 8px;
+}
+
+.field-control-container div[role="button"] {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  color: #333;
+  cursor: pointer;
+  background-color: #7da7d9;
+  border-radius: 50%;
 }

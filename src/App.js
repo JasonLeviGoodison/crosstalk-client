@@ -22,6 +22,7 @@ function App() {
   console.log("GOT MY USER ID ITS", userId);
   return (
     <div className="App">
+      <div id="field">
       <Router>
         <Header />
         <Switch>
@@ -34,6 +35,7 @@ function App() {
           <Route exact path={routes.FEEDBACK} component={Feedback} /> */}
         </Switch>
       </Router>
+      </div>
     </div>
   );
 }

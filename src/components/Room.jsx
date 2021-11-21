@@ -12,7 +12,9 @@ import { Tooltip } from '@mui/material';
 import { withRouter } from 'react-router';
 import * as roomApi from '../api/roomApi';
 import * as routes from '../routes';
-
+import VideocamIcon from '@mui/icons-material/Videocam';
+import VideocamOffIcon from '@mui/icons-material/VideocamOff';
+import { Dropdown, ButtonGroup } from 'react-bootstrap';
 
 const MyVideo = styled.video`
   width: 22%;
@@ -23,8 +25,7 @@ const MyVideo = styled.video`
 `;
 
 const MainVideo = styled.video`
-height: 94vh;
-width: 94vw;
+  height: 100%;
 `;
 
 // Renderer callback with condition
@@ -51,6 +52,7 @@ const Room = (props) => {
     history,
     location: {
       state: {
+        // this is a really bad default setting
         native = 'English',
         learning = 'Spanish'
       }
@@ -62,12 +64,15 @@ const Room = (props) => {
   const [newRoom, setNewRoom] = useState(0)
   const partnerVideo = useRef();
   const socket = useRef();
-  const [stream, setStream] = useState();
   const streamRef = useRef()
   const peerRef = useRef();
   const [searching, setSearching] = useState(true);
   const [theirMicOn, setTheirMicOn] = useState(true);
   const [myMicOn, setMyMicOn] = useState(true);
+  const [audioList, setAudioList] = useState([]);
+  const [videoList, setVideoList] = useState([]);
+  const [audioDeviceId, setAudioDeviceId] = useState(null)
+  const [videoDeviceId, setVideoDeviceId] = useState(null)
 
   async function findNewRoom() {
     console.log("Going to find another user to meet with")
@@ -93,11 +98,14 @@ const Room = (props) => {
 
 
   useEffect(() => {
-    
+    // first thing we do is get the devices
+    console.log("CALLING USEEFFECT")
+    updateDeviceList()
+
+    console.log("devide settings", audioDeviceId, videoDeviceId)
     function connectToUser(otherUserId) {
       const peer = peerRef.current;
-      console.log("peer before clal", peer)
-      console.log("Calling ", otherUserId, " with ", stream)
+      console.log("Calling ", otherUserId, " with ", streamRef.current)
       const call = peer.call(otherUserId, streamRef.current)
   
       console.log("CALL", call)
@@ -115,9 +123,13 @@ const Room = (props) => {
     }
 
     console.log("RUNNING THE USEEFFECT HERER")
+    if (socket.current != null) {
+      socket.current.disconnect();
+    }
     socket.current = io.connect(process.env.REACT_APP_API_URL, { transports : ['websocket'] });
-    navigator.mediaDevices.getUserMedia({ video: true, audio: true }).then(stream => {
-      setStream(stream);
+    navigator.mediaDevices.getUserMedia({ video: {deviceId: videoDeviceId}, audio: { deviceId: audioDeviceId} }).then(stream => {
+      console.log("got stream", stream)
+
       streamRef.current = stream;
       if (userVideo.current) {
         userVideo.current.srcObject = stream;
@@ -164,7 +176,7 @@ const Room = (props) => {
         setTimeout(() => {
           // user joined
           connectToUser(otherPeerId)
-        }, 1000)
+        }, 2000)
       })
       
     }).catch(e => {
@@ -183,7 +195,7 @@ const Room = (props) => {
       setTheirMicOn(value)
     })
 
-  }, [roomId, userId])
+  }, [roomId, userId, audioDeviceId, videoDeviceId])
 
   useEffect(() => {
     return () => {
@@ -198,39 +210,82 @@ const Room = (props) => {
     }
   }, [])
 
+  function updateDeviceList() {
+    navigator.mediaDevices.enumerateDevices()
+    .then(function(devices) {
+      const loa = []
+      const lov = []
+  
+      devices.forEach(function(device) {
+        let [kind, type, direction] = device.kind.match(/(\w+)(input|output)/i);
 
-  let UserVideo;
-  if (stream) {
-    UserVideo = (
+        if (direction !== 'input') {
+          return;
+        }
+  
+        if (type === "audio") {
+          loa.indexOf(device === -1) && loa.push(device);
+        } else if (type === "video") {
+          lov.indexOf(device === -1) && lov.push(device);
+        }
+      });
+      setAudioList(loa);
+      setVideoList(lov);
+    });
+  }
+
+  let UserVideo = (
       <MyVideo playsInline muted ref={userVideo} autoPlay />
     );
-  }
 
   let PartnerVideo = (
       <MainVideo muted={!theirMicOn} playsInline ref={partnerVideo} autoPlay />
   );
   
   return (
-    <div style={{backgroundColor: 'black'}}>
+    <div style={{backgroundColor: 'black', height: '100%'}}>
       {searching && <div style={{backgroundColor: 'white'}}>
         Searching for partner ... <br/>
         If no one is on right now, join during an <a href="https://www.meetup.com/virtual-language-exchange-pidginpost"> event </a> where you'll be guarenteed to find a partner.
-        <Countdown renderer={countdownRenderer} date={Date.now() + 299 * 1000} /> </div> }
+        <br/><Countdown renderer={countdownRenderer} date={Date.now() + 119 * 1000} /> </div> }
+
       {UserVideo}
       {PartnerVideo}
-      <div style={{ position: 'absolute', right: '46%', bottom: 10, display: 'flex', justifyContent: 'space-between', width: "13%"}}>
+
+      <div className="control-container">
         <Tooltip title="Hang up">
           <Button variant="danger" onClick={() => history.push('/')}> <CallEndIcon fontSize="large"/> </Button>
         </Tooltip>
-        {
-          searching === false &&
-          <Tooltip title={"Turn Mic " + (myMicOn ? "Off" : "On")}>
-            <Button variant="primary" onClick={sendMicOffRequest}> { !myMicOn ? <MicOffIcon fontSize="large"/> : <MicIcon fontSize="large"/> } </Button>
-          </Tooltip>
-        }
         <Tooltip title={"Find a new partner"}>
-          <Button variant="secondary" onClick={findNewRoom}> <NextPlanIcon fontSize="large"/> </Button>
+          <Button variant="danger" onClick={findNewRoom}> <NextPlanIcon fontSize="large"/> </Button>
         </Tooltip>
+        <Dropdown as={ButtonGroup}>
+          <Tooltip title={"Turn Mic " + (myMicOn ? "Off" : "On")}>
+          <Button variant="primary" onClick={sendMicOffRequest}> { !myMicOn ? <MicOffIcon fontSize="large"/> : <MicIcon fontSize="large"/> } </Button>
+          </Tooltip>
+
+          <Dropdown.Toggle split variant="secondary" id="dropdown-split-basic"/>
+
+          <Dropdown.Menu id="dropDownMenu">
+            {audioList.map(device => {
+              return (<Dropdown.Item onClick={() => setAudioDeviceId(device.deviceId)} key={device.deviceId}>{device.label}</Dropdown.Item>)
+            })}
+          </Dropdown.Menu>
+        </Dropdown>
+        {/* TODO: UPDATE VARIABLES */}
+        <Dropdown as={ButtonGroup}>
+          <Tooltip title={"Turn Video " + (myMicOn ? "Off" : "On")}>
+            <Button variant="primary" onClick={sendMicOffRequest}> { !myMicOn ? <VideocamOffIcon fontSize="large"/> : <VideocamIcon fontSize="large"/> } </Button>
+          </Tooltip>
+
+          <Dropdown.Toggle split variant="secondary" id="dropdown-split-basic"/>
+
+          <Dropdown.Menu id="dropDownMenu">
+            {videoList.map(device => {
+              return (<Dropdown.Item onClick={() => setVideoDeviceId(device.deviceId)} key={device.deviceId}>{device.label}</Dropdown.Item>)
+            })}
+          </Dropdown.Menu>
+        </Dropdown>
       </div>
     </div>
   );
