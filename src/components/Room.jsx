@@ -100,7 +100,7 @@ const Room = (props) => {
   useEffect(() => {
     // first thing we do is get the devices
     console.log("CALLING USEEFFECT")
-    updateDeviceList()
+    updateDeviceList();
 
     console.log("devide settings", audioDeviceId, videoDeviceId)
     function connectToUser(otherUserId) {
@@ -243,7 +243,7 @@ const Room = (props) => {
   );
   
   return (
-    <div style={{backgroundColor: 'black', height: '100%'}}>
+    <div style={{backgroundColor: 'black', height: '100%', overflow: 'hidden'}}>
       {searching && <div style={{backgroundColor: 'white'}}>
         Searching for partner ... <br/>
         If no one is on right now, join during an <a href="https://www.meetup.com/virtual-language-exchange-pidginpost"> event </a> where you'll be guarenteed to find a partner.
@@ -274,8 +274,8 @@ const Room = (props) => {
         </Dropdown>
         {/* TODO: UPDATE VARIABLES */}
         <Dropdown as={ButtonGroup}>
-          <Tooltip title={"Turn Video " + (myMicOn ? "Off" : "On")}>
-            <Button variant="primary" onClick={sendMicOffRequest}> { !myMicOn ? <VideocamOffIcon fontSize="large"/> : <VideocamIcon fontSize="large"/> } </Button>
+          <Tooltip title={"Turn Video Off (Coming soon)"}>
+            <Button disabled variant="primary" onClick={sendMicOffRequest}> { !myMicOn ? <VideocamOffIcon fontSize="large"/> : <VideocamIcon fontSize="large"/> } </Button>
           </Tooltip>
 
           <Dropdown.Toggle split variant="secondary" id="dropdown-split-basic"/>
