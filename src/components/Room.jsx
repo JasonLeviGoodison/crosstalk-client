@@ -93,7 +93,12 @@ const Room = (props) => {
 
   function sendMicOffRequest() {
     socket.current.emit("mic set", !myMicOn);
+    setAudioDeviceId(false);
     setMyMicOn(!myMicOn);
+  }
+
+  function muteVideo() {
+    setVideoDeviceId(false);
   }
 
 
