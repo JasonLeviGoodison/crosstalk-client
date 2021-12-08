@@ -28,6 +28,7 @@ const Form = ({history}) => {
   }
 
   async function findPartnerNow() {
+    window.location = "https://www.bar.live/en/bar/barcelona-language-exchange"
     if (learningLanguage === '' || nativeLanguage === '') {
       alert("Please fill out form");
       return;
