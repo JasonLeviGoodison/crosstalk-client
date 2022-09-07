@@ -1,4 +1,4 @@
-#What is Crosstalk?
+# What is Crosstalk?
 Think "Chatroulette for language learners". This app was used by ~200 people at peak and had a Meetup group integrated mute, call, next partner functionality
 I forgot to take screenshots while it was live, but it looked a lot like zoom. The only page I can get up with ease is the find partner page, which is here:
 
